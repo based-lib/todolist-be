@@ -1,4 +1,4 @@
-package com.example.todolist.todo
+package com.example.todolist.todo.infrastructure.jpa
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -10,7 +10,7 @@ import java.time.Instant
 
 @Entity
 @Table(name = "todos")
-class TodoEntity(
+class TodoJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

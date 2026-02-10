@@ -1,5 +1,6 @@
-package com.example.todolist.todo
+package com.example.todolist.todo.web
 
+import com.example.todolist.todo.domain.Todo
 import jakarta.validation.constraints.NotBlank
 import java.time.Instant
 
@@ -25,13 +26,13 @@ data class TodoResponse(
     val updatedAt: Instant
 ) {
     companion object {
-        fun from(entity: TodoEntity): TodoResponse = TodoResponse(
-            id = entity.id,
-            title = entity.title,
-            description = entity.description,
-            completed = entity.completed,
-            createdAt = entity.createdAt,
-            updatedAt = entity.updatedAt
+        fun from(todo: Todo): TodoResponse = TodoResponse(
+            id = requireNotNull(todo.id),
+            title = todo.title,
+            description = todo.description,
+            completed = todo.completed,
+            createdAt = todo.createdAt,
+            updatedAt = todo.updatedAt
         )
     }
 }

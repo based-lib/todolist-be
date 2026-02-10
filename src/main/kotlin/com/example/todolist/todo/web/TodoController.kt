@@ -1,5 +1,6 @@
-package com.example.todolist.todo
+package com.example.todolist.todo.web
 
+import com.example.todolist.todo.application.TodoService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -19,17 +20,23 @@ class TodoController(
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@Valid @RequestBody request: CreateTodoRequest): TodoResponse = service.create(request)
+    fun create(@Valid @RequestBody request: CreateTodoRequest): TodoResponse {
+        val todo = service.create(request.title, request.description)
+        return TodoResponse.from(todo)
+    }
 
     @GetMapping
     fun list(): List<TodoResponse> = service.list()
+        .map(TodoResponse::from)
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: Long): TodoResponse = service.get(id)
+    fun get(@PathVariable id: Long): TodoResponse = TodoResponse.from(service.get(id))
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @Valid @RequestBody request: UpdateTodoRequest): TodoResponse =
-        service.update(id, request)
+    fun update(@PathVariable id: Long, @Valid @RequestBody request: UpdateTodoRequest): TodoResponse {
+        val todo = service.update(id, request.title, request.description, request.completed)
+        return TodoResponse.from(todo)
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
